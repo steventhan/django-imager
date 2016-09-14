@@ -25,7 +25,7 @@ class ImagerProfile(models.Model):
             max_length=2,
             blank=True,
             null=True)
-    state = models.CharField(
+    zipcode = models.CharField(
             max_length=7,
             blank=True,
             null=True)
