@@ -41,4 +41,4 @@ class ImagerProfile(models.Model):
 
     def __str__(self):
         fn = self.user.get_full_name().strip() or self.user.get_username()
-        return "{}: {}".format(fn, self.card_number)
+        return "{}".format(fn)
