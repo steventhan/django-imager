@@ -25,7 +25,7 @@ class Photo(models.Model):
             max_length=7,
             blank=True,
             null=True)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='images/%Y-%m-%d')
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     def __str__(self):
