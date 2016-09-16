@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.conf import settings
 
+
 # Create your models here.
 @python_2_unicode_compatible
 class ImagerProfile(models.Model):
@@ -29,8 +30,12 @@ class ImagerProfile(models.Model):
             max_length=7,
             blank=True,
             null=True)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
 
+    @property
     def is_active(self):
         return self.active
 
