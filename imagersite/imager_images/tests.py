@@ -23,8 +23,6 @@ class PhotoTestCase(TestCase):
     def setUp(self):
         self.user = User(username='test_user')
         self.user.save()
-        self.profile = ImagerProfile(user=self.user)
-        self.profile.save()
         self.photo = PhotoFactory(user=self.user)
         self.photo.save()
 
@@ -42,8 +40,6 @@ class AlbumTestCase(TestCase):
     def setUp(self):
         self.user = User(username='test_user')
         self.user.save()
-        self.profile = ImagerProfile(user=self.user)
-        self.profile.save()
         self.photo = PhotoFactory(user=self.user)
         self.photo.save()
         self.album = AlbumFactory(cover=self.photo, user=self.user)
