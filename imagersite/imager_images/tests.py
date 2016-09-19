@@ -19,13 +19,13 @@ import factory
 class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Photo
-    title = 'Test Photo'
+    title = factory.Sequence(lambda n: "Photo {}".format(n))
 
 
 class AlbumFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Album
-    title = 'Test Album'
+    title = factory.Sequence(lambda n: "Album {}".format(n))
 
 
 class PhotoTestCase(TestCase):
