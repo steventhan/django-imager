@@ -29,6 +29,7 @@ class AlbumFactory(factory.django.DjangoModelFactory):
 
 
 class PhotoTestCase(TestCase):
+
     def setUp(self):
         self.user = User(username='test_user')
         self.user.save()
@@ -47,6 +48,7 @@ class PhotoTestCase(TestCase):
 
 
 class AlbumTestCase(TestCase):
+
     def setUp(self):
         self.user = User(username='test_user')
         self.user.save()
@@ -64,9 +66,13 @@ class AlbumTestCase(TestCase):
 
     def test_album_photos(self):
         """Test album size."""
-        length = self.album.photos.count()
-        self.assertTrue(length == 1)
+        num_photos = self.album.photos.count()
+        self.assertTrue(num_photos == 1)
 
     def test_album_reference(self):
         """Test album referenced to user."""
         self.assertTrue(self.album.user == self.user)
+
+    def test_album_cover(self):
+        """Test that there is a cover photo."""
+        self.assertTrue(self.album.cover == self.photo)
