@@ -1,19 +1,9 @@
-"""Tests for the Photo and ALbum Models."""
+"""Tests for the Photo and Album models."""
 from django.test import TestCase
 from imager_images.models import Photo, Album
 from imager_profile.models import ImagerProfile
 from django.contrib.auth.models import User
 import factory
-
-
-#class UserFactory(factory.django.DjangoModelFactory):
-#    class Meta:
-#        model = User
-
-#    username = factory.Sequence(lambda n: "user{}".format(n))
-#    email = factory.Sequence(
-#        lambda n: "user{}@example.com".format(n)
-#    )
 
 
 class PhotoFactory(factory.django.DjangoModelFactory):
