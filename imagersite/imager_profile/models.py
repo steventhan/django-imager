@@ -38,7 +38,7 @@ class ImagerProfile(models.Model):
 
     @property
     def is_active(self):
-        return self.is_active
+        return self.user.is_active
 
     def __str__(self):
         fn = self.user.get_full_name().strip() or self.user.get_username()
@@ -48,5 +48,5 @@ class ImagerProfile(models.Model):
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_imager_profile(sender, **kwargs):
     """Create a imager profile assoc with User if it's a new user."""
-    import pdb; pdb.set_trace()
-    ImagerProfile(user=kwargs['instance']).save()
+    if kwargs['created']:
+        ImagerProfile(user=kwargs['instance']).save()
