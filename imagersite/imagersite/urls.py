@@ -15,7 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.shortcuts import render
+
+
+def home_view(request):
+    context = {
+        'page_title': 'Home'
+    }
+    return render(request, 'imagersite/index.html')
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', home_view)
 ]
