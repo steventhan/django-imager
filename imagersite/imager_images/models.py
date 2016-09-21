@@ -26,7 +26,7 @@ class Photo(models.Model):
             blank=True,
             null=True)
     image = models.ImageField(upload_to='images/%Y-%m-%d')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
     def __str__(self):
         return "{}: {}".format(self.title, self.user.username)

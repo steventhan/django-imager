@@ -1,0 +1,12 @@
+<h1>Photos in Album: {{ album.title }}</h1>
+<ul>
+  {% for p in album.photos.all %}
+    <li>
+        <p><strong>Title: </strong>{{ p.title }}</p>
+        <p><strong>Description: </strong>{{ p.description}}</p>
+        <p><strong>Full size url: </strong><a href="/media/{{p.image}}">Link</a></p>
+        <p><strong>Thumbnail: </strong></p>
+        <img style="width: 100px;" src="/media/{{p.image}}">
+    </li>
+  {% endfor %}
+</ul>
