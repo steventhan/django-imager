@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 def home_view(request):
@@ -36,4 +38,6 @@ urlpatterns = [
         success_url='/'
     )),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-]
+    url(r'^profile/', include('imager_profile.urls')),
+    url(r'^uploads/', include('imager_images.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

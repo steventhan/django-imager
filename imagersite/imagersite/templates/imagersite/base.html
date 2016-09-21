@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Imager | {{ page_title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Vendor css -->
+		{% load static %}
+		<link rel="stylesheet" href="{% static "imagersite/vendors/css/normalize.css" %}">
+		<link rel="stylesheet" href="{% static "imagersite/vendors/css/fonts/font-awesome.min.css" %}">
+		<link rel="stylesheet" href="{% static "imagersite/vendors/bootstrap/css/bootstrap.min.css" %}">
+
+    <!-- Custom shared css -->
+		<link rel="stylesheet" href="{% static "imagersite/assets/css/base.css" %}">
+		<link rel="stylesheet" href="{% static "imagersite/assets/css/layout.css" %}">
+		<link rel="stylesheet" href="{% static "imagersite/assets/css/modules.css" %}">
+
+    <!-- Custom private css -->
+		{% block css %}{% endblock %}
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+					<a class="navbar-brand" href="/">Imager</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li {% if page_title == 'Home' %}class="current"{% endif %}><a href="/">Home</a></li>
+            <li {% if page_title == 'Profile'%}class="current"{% endif %}><a href="/profile">Profile</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+    <!-- Vendor scripts -->
+		<script src="{% static "imagersite/vendors/js/jquery-2.2.4.min.js" %}"></script>
+		<script src="{% static "imagersite/vendors/bootstrap/js/bootstrap.min.js" %}"></script>
+
+		<!-- Custom private scripts -->
+		{% block js %}{% endblock %}
+	</body>
+</html>
