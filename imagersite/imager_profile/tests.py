@@ -82,6 +82,7 @@ class RegistrationView(TestCase):
     """Test case for registration view."""
     def setUp(self):
         self.response = self.client.get(reverse('auth_login'))
+        self.signup_res = self.client.get(reverse('registration_register'))
         self.c = Client()
         self.user = User(username='test_user')
         self.user.save()
@@ -95,10 +96,24 @@ class RegistrationView(TestCase):
         self.assertEquals(self.response.status_code, 200)
         self.assertContains(self.response, 'Login:')
 
-    def test_view_when_logged_in(self):
-        self.assertContains(self.logged_in_response, 'My Imager profile')
-
-    def test_correct_template_for_my_profile(self):
+    def test_correct_template_login_view(self):
         self.assertTemplateUsed(
-            self.logged_in_response, 'imager_profile/my_profile.html'
+            self.response, 'registration/login.html'
         )
+
+    def test_register_view_not_logged_in(self):
+        self.assertEquals(self.signup_res.status_code, 200)
+        self.assertContains(self.signup_res, '150 characters or fewer.')
+
+    def test_correct_template_register_view(self):
+        self.assertTemplateUsed(
+            self.signup_res, 'registration/registration_form.html'
+        )
+
+    def test_login_view_redirect_when_logged_in(self):
+        login_res = self.c.get(reverse('auth_login'))
+        self.assertEquals(login_res.status_code, 302)
+
+    def test_register_view_redirect_when_logged_in(self):
+        register_res = self.c.get(reverse('registration_register'))
+        self.assertEquals(register_res.status_code, 302)

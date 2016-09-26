@@ -13,12 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.views.generic.base import TemplateView
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.shortcuts import render
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import custom_login
+from .views import CustomLoginView, CustomRegistrationView
 
 
 def home_view(request):
@@ -30,8 +31,9 @@ def home_view(request):
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', home_view, name='home'),
-    url(r'^accounts/login/$', custom_login),
+    url(r'^$', TemplateView.as_view(template_name='imagersite/index.html'), name='home'),
+    url(r'^accounts/login/$', CustomLoginView.as_view()),
+    url(r'^accounts/register/$', CustomRegistrationView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^profile/', include('imager_profile.urls')),
     url(r'^uploads/', include('imager_images.urls')),
