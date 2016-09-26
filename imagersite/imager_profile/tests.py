@@ -1,6 +1,7 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from imager_profile.models import ImagerProfile
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class ImagerProfileTestCase(TestCase):
@@ -49,3 +50,55 @@ class ImagerProfileTestCase(TestCase):
         self.assertTrue(fetch_from_db.imagerprofile.city, 'Seattle')
         self.assertTrue(fetch_from_db.imagerprofile.address_2, 'ste 200')
         self.assertTrue(fetch_from_db.imagerprofile.address_1, '100 1st st')
+
+
+class ProfileView(TestCase):
+    """Test case for profile view."""
+    def setUp(self):
+        self.response = self.client.get(reverse('my_profile'), follow=True)
+        self.c = Client()
+        self.user = User(username='test_user')
+        self.user.save()
+        self.c.force_login(user=self.user)
+        self.logged_in_response = self.c.get(reverse('my_profile'))
+
+    def tearDown(self):
+        self.user.delete()
+
+    def test_view_redirect_when_not_logged_in(self):
+        self.assertEquals(self.response.status_code, 200)
+        self.assertContains(self.response, 'Login:')
+
+    def test_view_when_logged_in(self):
+        self.assertContains(self.logged_in_response, 'My Imager profile')
+
+    def test_correct_template_for_my_profile(self):
+        self.assertTemplateUsed(
+            self.logged_in_response, 'imager_profile/my_profile.html'
+        )
+
+
+class RegistrationView(TestCase):
+    """Test case for registration view."""
+    def setUp(self):
+        self.response = self.client.get(reverse('auth_login'))
+        self.c = Client()
+        self.user = User(username='test_user')
+        self.user.save()
+        self.c.force_login(user=self.user)
+        self.logged_in_response = self.c.get(reverse('my_profile'))
+
+    def tearDown(self):
+        self.user.delete()
+
+    def test_login_view_not_logged_in(self):
+        self.assertEquals(self.response.status_code, 200)
+        self.assertContains(self.response, 'Login:')
+
+    def test_view_when_logged_in(self):
+        self.assertContains(self.logged_in_response, 'My Imager profile')
+
+    def test_correct_template_for_my_profile(self):
+        self.assertTemplateUsed(
+            self.logged_in_response, 'imager_profile/my_profile.html'
+        )

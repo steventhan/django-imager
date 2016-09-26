@@ -16,10 +16,9 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
 from django.conf.urls.static import static
 from django.conf import settings
+from .views import custom_login
 
 
 def home_view(request):
@@ -31,12 +30,8 @@ def home_view(request):
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', home_view),
-    url(r'^register/', CreateView.as_view(
-        template_name='registration/register.html',
-        form_class=UserCreationForm,
-        success_url='/'
-    )),
+    url(r'^$', home_view, name='home'),
+    url(r'^accounts/login/$', custom_login),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^profile/', include('imager_profile.urls')),
     url(r'^uploads/', include('imager_images.urls')),
