@@ -17,6 +17,9 @@ class PhotoView(ListView):
         context['MEDIA_ROOT'] = settings.MEDIA_ROOT
         return context
 
+    def get_queryset(self):
+        return Photo.objects.filter(user=self.request.user).all()
+
 
 @method_decorator(login_required, name='dispatch')
 class AlbumView(ListView):

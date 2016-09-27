@@ -120,3 +120,30 @@ class AlbumDetailView(TestCase):
 
     def test_albums_logged_in(self):
         self.assertContains(self.logged_in_response, 'Photos in Album:', status_code=200)
+
+
+class PhotosView(TestCase):
+    """Test the photos view."""
+    def setUp(self):
+        self.response = self.client.get(reverse('photos_list'))
+        self.c = Client()
+        self.user = User(username='test_user')
+        self.user.save()
+        self.photo = PhotoFactory(user=self.user)
+        self.photo.save()
+        self.album = AlbumFactory(cover=self.photo, user=self.user)
+        self.album.save()
+        self.album.photos.add(self.photo)
+        self.c.force_login(user=self.user)
+        self.logged_in_response = self.c.get(reverse('photos_list'))
+
+    def tearDown(self):
+        self.user.delete()
+        self.photo.delete()
+        self.album.delete()
+
+    def test_photos_redirect(self):
+        self.assertEquals(self.response.status_code, 302)
+
+    def test_photos_logged_in(self):
+        self.assertContains(self.logged_in_response, 'Photos', status_code=200)
