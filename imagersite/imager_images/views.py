@@ -40,6 +40,9 @@ class AlbumDetailView(DetailView):
     model = Album
     context_object_name = 'album'
 
+    def get_queryset(self):
+        return Album.objects.filter(user=self.request.user, id=self.kwargs['pk'])
+
 
     #def get_context_data(self, **kwargs):
     #    context = super(AlbumDetailView, self).get_context_data(**kwargs)

@@ -71,11 +71,18 @@ class AlbumView(TestCase):
         self.c = Client()
         self.user = User(username='test_user')
         self.user.save()
+        self.photo = PhotoFactory(user=self.user)
+        self.photo.save()
+        self.album = AlbumFactory(cover=self.photo, user=self.user)
+        self.album.save()
+        self.album.photos.add(self.photo)
         self.c.force_login(user=self.user)
         self.logged_in_response = self.c.get(reverse('albums_list'))
 
     def tearDown(self):
         self.user.delete()
+        self.photo.delete()
+        self.album.delete()
 
     def test_albums_redirect(self):
         self.assertEquals(self.response.status_code, 302)
@@ -86,3 +93,30 @@ class AlbumView(TestCase):
     def test_context_albums(self):
         from django.db.models.query import QuerySet
         assert type(self.logged_in_response.context['albums']) is QuerySet
+
+
+class AlbumDetailView(TestCase):
+    """Test the album detail view."""
+    def setUp(self):
+        self.response = self.client.get(reverse('album_detail', args=(1,)))
+        self.c = Client()
+        self.user = User(username='test_user')
+        self.user.save()
+        self.photo = PhotoFactory(user=self.user)
+        self.photo.save()
+        self.album = AlbumFactory(cover=self.photo, user=self.user)
+        self.album.save()
+        self.album.photos.add(self.photo)
+        self.c.force_login(user=self.user)
+        self.logged_in_response = self.c.get(reverse('album_detail', args=(self.album.id,)))
+
+    def tearDown(self):
+        self.user.delete()
+        self.photo.delete()
+        self.album.delete()
+
+    def test_albums_redirect(self):
+        self.assertEquals(self.response.status_code, 302)
+
+    def test_albums_logged_in(self):
+        self.assertContains(self.logged_in_response, 'Photos in Album:', status_code=200)
