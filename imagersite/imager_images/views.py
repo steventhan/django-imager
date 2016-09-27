@@ -24,6 +24,9 @@ class AlbumView(ListView):
     model = Album
     context_object_name = 'albums'
 
+    def get_queryset(self):
+        return Album.objects.filter(user=self.request.user).all()
+
 
     def get_context_data(self, **kwargs):
         context = super(AlbumView, self).get_context_data(**kwargs)

@@ -21,10 +21,7 @@ class Photo(models.Model):
             null=True)
     date_published = models.DateTimeField(
             null=True)
-    published = models.CharField(
-            max_length=7,
-            blank=True,
-            null=True)
+    published = models.BooleanField(default=False)
     image = models.ImageField(upload_to='images/%Y-%m-%d')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 

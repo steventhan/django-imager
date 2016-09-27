@@ -29,4 +29,7 @@
 <p>
   <strong>Zipcode: </strong> {{ user.profile.zipcode }}
 </p>
+<p>
+  <a href="{% url 'albums_list' %}">My Albums</a>
+</p>
 <button type="button" name="button"><a href="{% url 'auth_logout' %}">Logout</a></button>

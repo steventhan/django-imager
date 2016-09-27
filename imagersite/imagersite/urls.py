@@ -19,19 +19,12 @@ from django.contrib import admin
 from django.shortcuts import render
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import CustomLoginView, CustomRegistrationView
-
-
-def home_view(request):
-    context = {
-        'page_title': 'Home'
-    }
-    return render(request, 'imagersite/index.html', context)
+from .views import CustomLoginView, CustomRegistrationView, home_view
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='imagersite/index.html'), name='home'),
+    url(r'^$', home_view, name='home'),
     url(r'^accounts/login/$', CustomLoginView.as_view()),
     url(r'^accounts/register/$', CustomRegistrationView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
