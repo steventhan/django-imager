@@ -33,8 +33,13 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li {% if page_title == 'Home' %}class="current"{% endif %}><a href="/">Home</a></li>
-            <li {% if page_title == 'Login'%}class="current"{% endif %}><a href="{% url 'my_profile' %}">Login</a></li>
-            <li {% if page_title == 'Login'%}class="current"{% endif %}><a href="{% url 'registration_register' %}">Signup</a></li>
+            {% if user.is_authenticated %}
+            <li {% if page_title == 'Login'%}class="current"{% endif %}><a href="{% url 'my_profile' %}">My profile</a></li>
+            <li {% if page_title == 'Login'%}class="current"{% endif %}><a href="{% url 'auth_logout' %}">Logout</a></li>
+            {% else %}
+            <li {% if page_title == 'Login'%}class="current"{% endif %}><a href="{% url 'auth_login' %}">Login</a></li>
+            <li {% if page_title == 'Login'%}class="current"{% endif %}><a href="{% url 'registration_register' %}">New account</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>

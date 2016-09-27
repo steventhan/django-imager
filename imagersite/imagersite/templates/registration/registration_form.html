@@ -1,9 +1,12 @@
-<html>
-    <h3>Registration</h3>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit">
-    </form>
+{% extends 'imagersite/base.html' %}
 
-</html>
+{% block body %}
+<main class="container">
+  <h3>Registration</h3>
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</main>
+{% endblock %}

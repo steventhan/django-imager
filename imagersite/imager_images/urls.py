@@ -1,12 +1,17 @@
 from django.conf.urls import url
-from .views import PhotoView, AlbumView, AlbumDetailView
+from .views import PhotoView, AlbumView, AlbumDetailView, UploadPhotoView
 
 
 urlpatterns = [
     url(
-        r'^photos/',
+        r'^photos/$',
         PhotoView.as_view(),
         name='photos_list'
+    ),
+    url(
+        r'^photos/new/$',
+        UploadPhotoView.as_view(),
+        name='upload_photo'
     ),
     url(
         r'^albums/$',
@@ -14,7 +19,7 @@ urlpatterns = [
         name='albums_list'
     ),
     url(
-        r'^albums/(?P<pk>\d+)',
+        r'^albums/(?P<pk>\d+)/$',
         AlbumDetailView.as_view(),
         name='album_detail'
     ),

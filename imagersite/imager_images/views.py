@@ -1,9 +1,11 @@
 from django.views.generic.list import ListView
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
+from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from .models import Photo, Album
+from .forms import PhotoForm, AlbumForm
 
 
 @method_decorator(login_required, name='dispatch')
@@ -30,7 +32,6 @@ class AlbumView(ListView):
     def get_queryset(self):
         return Album.objects.filter(user=self.request.user).all()
 
-
     def get_context_data(self, **kwargs):
         context = super(AlbumView, self).get_context_data(**kwargs)
         context['MEDIA_ROOT'] = settings.MEDIA_ROOT
@@ -47,8 +48,9 @@ class AlbumDetailView(DetailView):
         return Album.objects.filter(user=self.request.user, id=self.kwargs['pk'])
 
 
-    #def get_context_data(self, **kwargs):
-    #    context = super(AlbumDetailView, self).get_context_data(**kwargs)
-    #    context['MEDIA_ROOT'] = settings.MEDIA_ROOT
-    #    context['photos'] = 
-    #    return context
+@method_decorator(login_required, name='dispatch')
+class UploadPhotoView(CreateView):
+    template_name = 'imager_images/upload_photo.html'
+    model = Photo
+    fields = ['title', 'description', 'image', 'user']
+    success_url = '/'
