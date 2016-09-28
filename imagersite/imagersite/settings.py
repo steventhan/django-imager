@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_OPEN = True
 
 # Application definition
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'imager_profile',
     'imager_images',
+    'imagersite',
 ]
 
 MIDDLEWARE = [
