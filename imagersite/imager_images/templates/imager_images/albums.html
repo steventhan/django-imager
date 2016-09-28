@@ -1,0 +1,17 @@
+{% extends 'imagersite/base.html' %}
+
+{% block body %}
+<main class="container">
+  <h3>Albums</h3>
+  <ul>
+    {% for a in albums %}
+      <li>
+          <p><strong>Title: </strong>{{ a.title }}</p>
+          <p><strong>Description: </strong>{{ a.description}}</p>
+          <p><strong>Cover: </strong></p>
+          <a href="{{a.id}}"><img style="width: 100px;" src="/media/{{a.cover.image}}"></a>
+      </li>
+    {% endfor %}
+  </ul>
+<main class="container">
+{% endblock %}

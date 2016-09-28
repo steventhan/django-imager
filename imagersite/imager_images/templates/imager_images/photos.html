@@ -1,0 +1,26 @@
+{% extends 'imagersite/base.html' %}
+
+{% block body %}
+<main class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Photos</h3>
+      <ul>
+        {% for p in photos %}
+          <li>
+              <p><strong>Title: </strong>{{ p.title }}</p>
+              <p><strong>Description: </strong>{{ p.description}}</p>
+              <p><strong>Full size url: </strong><a href="/media/{{p.image}}">Link</a></p>
+              <p><strong>Thumbnail: </strong></p>
+              <img style="width: 100px;" src="/media/{{p.image}}">
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <h3>Options</h3>
+      <a href="{% url 'upload_photo' %}" class="btn btn-success">Upload photo</a>
+    </div>
+  </div>
+</main>
+{% endblock %}

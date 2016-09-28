@@ -1,8 +1,9 @@
 """Tests for the Photo and Album models."""
-from django.test import TestCase
+from django.test import TestCase, Client
 from imager_images.models import Photo, Album
 from django.contrib.auth.models import User
 import factory
+from django.urls import reverse
 
 
 class PhotoFactory(factory.django.DjangoModelFactory):
@@ -61,3 +62,88 @@ class AlbumTestCase(TestCase):
     def test_album_cover(self):
         """Test that there is a cover photo."""
         self.assertTrue(self.album.cover == self.photo)
+
+
+class AlbumView(TestCase):
+    """Test case for registration view."""
+    def setUp(self):
+        self.response = self.client.get(reverse('albums_list'))
+        self.c = Client()
+        self.user = User(username='test_user')
+        self.user.save()
+        self.photo = PhotoFactory(user=self.user)
+        self.photo.save()
+        self.album = AlbumFactory(cover=self.photo, user=self.user)
+        self.album.save()
+        self.album.photos.add(self.photo)
+        self.c.force_login(user=self.user)
+        self.logged_in_response = self.c.get(reverse('albums_list'))
+
+    def tearDown(self):
+        self.user.delete()
+        self.photo.delete()
+        self.album.delete()
+
+    def test_albums_redirect(self):
+        self.assertEquals(self.response.status_code, 302)
+
+    def test_albums_logged_in(self):
+        self.assertContains(self.logged_in_response, 'Albums', status_code=200)
+
+    def test_context_albums(self):
+        from django.db.models.query import QuerySet
+        assert type(self.logged_in_response.context['albums']) is QuerySet
+
+
+class AlbumDetailView(TestCase):
+    """Test the album detail view."""
+    def setUp(self):
+        self.response = self.client.get(reverse('album_detail', args=(1,)))
+        self.c = Client()
+        self.user = User(username='test_user')
+        self.user.save()
+        self.photo = PhotoFactory(user=self.user)
+        self.photo.save()
+        self.album = AlbumFactory(cover=self.photo, user=self.user)
+        self.album.save()
+        self.album.photos.add(self.photo)
+        self.c.force_login(user=self.user)
+        self.logged_in_response = self.c.get(reverse('album_detail', args=(self.album.id,)))
+
+    def tearDown(self):
+        self.user.delete()
+        self.photo.delete()
+        self.album.delete()
+
+    def test_albums_redirect(self):
+        self.assertEquals(self.response.status_code, 302)
+
+    def test_albums_logged_in(self):
+        self.assertContains(self.logged_in_response, 'Photos in Album:', status_code=200)
+
+
+class PhotosView(TestCase):
+    """Test the photos view."""
+    def setUp(self):
+        self.response = self.client.get(reverse('photos_list'))
+        self.c = Client()
+        self.user = User(username='test_user')
+        self.user.save()
+        self.photo = PhotoFactory(user=self.user)
+        self.photo.save()
+        self.album = AlbumFactory(cover=self.photo, user=self.user)
+        self.album.save()
+        self.album.photos.add(self.photo)
+        self.c.force_login(user=self.user)
+        self.logged_in_response = self.c.get(reverse('photos_list'))
+
+    def tearDown(self):
+        self.user.delete()
+        self.photo.delete()
+        self.album.delete()
+
+    def test_photos_redirect(self):
+        self.assertEquals(self.response.status_code, 302)
+
+    def test_photos_logged_in(self):
+        self.assertContains(self.logged_in_response, 'Photos', status_code=200)
