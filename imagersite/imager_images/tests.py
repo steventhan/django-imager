@@ -63,6 +63,7 @@ class AlbumTestCase(BaseTestCase):
 
 class AlbumView(BaseTestCase):
     """Test case for registration view."""
+
     def setUp(self):
         super(AlbumView, self).setUp()
         self.response = self.client.get(reverse('albums_list'))
@@ -82,11 +83,13 @@ class AlbumView(BaseTestCase):
     def test_user_association(self):
         self.assertEqual(self.logged_in_response.context['albums'].first().user, self.user)
 
-
+    def test_logged_in_template(self):
+        self.assertTemplateUsed(self.logged_in_response, 'imager_images/albums.html')
 
 
 class AlbumDetailView(BaseTestCase):
     """Test the album detail view."""
+
     def setUp(self):
         super(AlbumDetailView, self).setUp()
         self.response = self.client.get(reverse('album_detail', args=(1,)))
@@ -96,11 +99,15 @@ class AlbumDetailView(BaseTestCase):
         self.assertEquals(self.response.status_code, 302)
 
     def test_albums_logged_in(self):
-        self.assertContains(self.logged_in_response, 'Photos in Album:', status_code=200)
+        self.assertEquals(self.logged_in_response.status_code, 200)
+
+    def test_logged_in_template(self):
+        self.assertTemplateUsed(self.logged_in_response, 'imager_images/album-detail.html')
 
 
 class PhotosView(BaseTestCase):
     """Test the photos view."""
+
     def setUp(self):
         super(PhotosView, self).setUp()
         self.response = self.client.get(reverse('photos_list'))
@@ -111,3 +118,6 @@ class PhotosView(BaseTestCase):
 
     def test_photos_logged_in(self):
         self.assertContains(self.logged_in_response, 'Photos', status_code=200)
+
+    def test_logged_in_template(self):
+        self.assertTemplateUsed(self.logged_in_response, 'imager_images/photos.html')
