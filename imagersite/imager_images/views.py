@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.conf import settings
 from .models import Photo, Album
-from .forms import PhotoForm, AlbumForm
+import os
 
 
 @method_decorator(login_required, name='dispatch')
@@ -51,5 +51,9 @@ class AlbumDetailView(DetailView):
 class UploadPhotoView(CreateView):
     template_name = 'imager_images/upload_photo.html'
     model = Photo
-    fields = ['title', 'description', 'image', 'user']
-    success_url = '/'
+    fields = ['title', 'description', 'image']
+
+    def get_success_url(self):
+        self.object.user = self.request.user
+        self.object.save()
+        return os.path.join(settings.MEDIA_ROOT, self.object.image.url)

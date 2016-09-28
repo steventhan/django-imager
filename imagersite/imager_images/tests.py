@@ -4,7 +4,11 @@ from imager_images.models import Photo, Album
 from django.contrib.auth.models import User
 import factory
 from django.urls import reverse
+import os
+from io import open
 
+
+TEST_MEDIA_SOURCE_FILE = os.path.dirname(__file__) + '/test_media/salmon-cookies.png'
 
 class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -136,3 +140,14 @@ class UploadPhotoView(BaseTestCase):
 
     def test_form_in_context(self):
         self.assertTrue(str(type(self.logged_in_response.context['form'])) == "<class 'django.forms.widgets.PhotoForm'>")
+
+    def test_valid_post(self):
+        with open(TEST_MEDIA_SOURCE_FILE, 'rb') as fh:
+            data = {
+                'image': fh,
+                'title': 'hello',
+            }
+
+            self.post_response = self.c.post(reverse('upload_photo'), data)
+        photo = Photo.objects.last()
+        self.assertEqual(photo.user, self.user)
