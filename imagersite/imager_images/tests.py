@@ -121,3 +121,18 @@ class PhotosView(BaseTestCase):
 
     def test_logged_in_template(self):
         self.assertTemplateUsed(self.logged_in_response, 'imager_images/photos.html')
+
+
+class UploadPhotoView(BaseTestCase):
+    """Test the upload photo view."""
+
+    def setUp(self):
+        super(UploadPhotoView, self).setUp()
+        self.response = self.client.get(reverse('upload_photo'))
+        self.logged_in_response = self.c.get(reverse('upload_photo'))
+
+    def test_template_renders_logged_in(self):
+        self.assertTemplateUsed(self.logged_in_response, 'imager_images/upload_photo.html')
+
+    def test_form_in_context(self):
+        self.assertTrue(str(type(self.logged_in_response.context['form'])) == "<class 'django.forms.widgets.PhotoForm'>")
