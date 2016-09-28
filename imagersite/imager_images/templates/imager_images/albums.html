@@ -4,10 +4,10 @@
 <main class="container">
   <h3>Albums</h3>
   <ul>
-    {% for a in albums %}
+    {% for album in albums %}
       <li>
-          <p><strong>Title: </strong>{{ a.title }}</p>
-          <p><strong>Description: </strong>{{ a.description}}</p>
+          <p><strong>Title: </strong>{{ album.title }}</p>
+          <p><strong>Description: </strong>{{ album.description}}</p>
           <p><strong>Cover: </strong></p>
           <a href="{{a.id}}"><img style="width: 100px;" src="/media/{{a.cover.image}}"></a>
       </li>
