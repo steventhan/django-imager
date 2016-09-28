@@ -1,5 +1,4 @@
-from django.views.generic.list import ListView
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -20,7 +19,7 @@ class PhotoView(ListView):
         return context
 
     def get_queryset(self):
-        return Photo.objects.filter(user=self.request.user).all()
+        return Photo.objects.filter(user=self.request.user)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -30,7 +29,7 @@ class AlbumView(ListView):
     context_object_name = 'albums'
 
     def get_queryset(self):
-        return Album.objects.filter(user=self.request.user).all()
+        return Album.objects.filter(user=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(AlbumView, self).get_context_data(**kwargs)
