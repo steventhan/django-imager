@@ -2,6 +2,7 @@
 from django.test import TestCase, Client
 from imager_images.models import Photo, Album
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 import factory
 from django.urls import reverse
 import os
@@ -14,6 +15,13 @@ class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Photo
     title = factory.Sequence(lambda n: "Photo {}".format(n))
+    image = factory.LazyAttribute(
+        lambda _: ContentFile(
+            factory.django.ImageField()._make_data(
+                {'width': 1024, 'height': 768}
+            ), 'test.jpg'
+        )
+    )
 
 
 class AlbumFactory(factory.django.DjangoModelFactory):
@@ -148,6 +156,33 @@ class UploadPhotoView(BaseTestCase):
                 'title': 'hello',
             }
 
-            self.post_response = self.c.post(reverse('upload_photo'), data)
+            post_response = self.c.post(reverse('upload_photo'), data)
         photo = Photo.objects.last()
         self.assertEqual(photo.user, self.user)
+        self.assertEqual(photo.title, 'hello')
+
+
+class AddAlbumView(BaseTestCase):
+    """Test add album view."""
+
+    def setUp(self):
+        super(AddAlbumView, self).setUp()
+        self.response = self.client.get(reverse('add_album'))
+        self.logged_in_response = self.c.get(reverse('add_album'))
+
+    def test_template_renders_logged_in(self):
+        self.assertTemplateUsed(self.logged_in_response, 'imager_images/add_album.html')
+
+    def test_form_in_context(self):
+        self.assertTrue(str(type(self.logged_in_response.context['form'])) == "<class 'django.forms.widgets.AlbumForm'>")
+
+    def test_valid_post(self):
+        data = {
+            'title': 'hello',
+            'photos': self.photo.pk
+        }
+        post_response = self.c.post(reverse('add_album'), data)
+        self.assertEqual(post_response.status_code, 302)
+        album = Album.objects.last()
+        self.assertEqual(album.user, self.user)
+        self.assertEqual(album.title, 'hello')

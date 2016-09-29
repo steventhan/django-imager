@@ -30,9 +30,13 @@ class CustomRegistrationView(RegistrationView):
 
 def home_view(request):
 
-    picture_url = Photo.objects.filter(published=True).order_by('?').first().image
+    random_pic = Photo.objects.filter(published=True).order_by('?').first()
+    try:
+        random_pic_url = random_pic.image.url
+    except AttributeError:
+        random_pic_url = '/'
     context = {
         'page_title': 'Home',
-        'picture': MEDIA_URL + '/' + str(picture_url),
+        'picture': random_pic_url,
     }
     return render(request, 'imagersite/index.html', context)
