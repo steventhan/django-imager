@@ -209,11 +209,11 @@ class EditPhotoTestCase(BaseTestCase):
 
     def test_valid_post(self):
         data = {
-            'title': 'hello',
-            'photos': self.photo.pk
+            'title': 'edited',
+            'description': 'edited',
         }
-        post_response = self.c.post(reverse('add_album'), data)
-        self.assertEqual(post_response.status_code, 302)
-        album = Album.objects.last()
-        self.assertEqual(album.user, self.user)
-        self.assertEqual(album.title, 'hello')
+        post = self.c.post(reverse('edit_photo', args=(self.photo.pk, )), data)
+        self.assertEqual(post.status_code, 302)
+        photo = Photo.objects.last()
+        self.assertEqual(photo.title, 'edited')
+        self.assertEqual(photo.description, 'edited')
