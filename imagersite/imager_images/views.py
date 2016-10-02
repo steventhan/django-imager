@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.conf import settings
@@ -66,7 +66,7 @@ class UploadPhotoView(CreateView):
     def get_success_url(self):
         self.object.user = self.request.user
         self.object.save()
-        return os.path.join(settings.MEDIA_ROOT, self.object.image.url)
+        return reverse('photo_detail', args=(self.object.pk,))
 
 
 @method_decorator(login_required, name='dispatch')
@@ -79,3 +79,13 @@ class AddAlbumView(CreateView):
         self.object.user = self.request.user
         self.object.save()
         return reverse('album_detail', args=(self.object.pk,))
+
+
+@method_decorator(login_required, name='dispatch')
+class EditPhotoView(UpdateView):
+    template_name = 'imager_images/edit_photo.html'
+    model = Photo
+    fields = ['title', 'description', 'published']
+
+    def get_success_url(self):
+        return reverse('photo_detail', args=(self.object.pk,))

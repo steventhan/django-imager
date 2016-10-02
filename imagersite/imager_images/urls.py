@@ -5,6 +5,7 @@ from .views import (PhotoView,
                     UploadPhotoView,
                     AddAlbumView,
                     PhotoDetailView,
+                    EditPhotoView,
                     )
 
 
@@ -15,7 +16,7 @@ urlpatterns = [
         name='photos_list'
     ),
     url(
-        r'^photo/(?P<pk>\d+)/$',
+        r'^photos/(?P<pk>\d+)/$',
         PhotoDetailView.as_view(),
         name='photo_detail'
     ),
@@ -25,17 +26,22 @@ urlpatterns = [
         name='upload_photo'
     ),
     url(
+        r'^photos/(?P<pk>\d+)/edit/$',
+        EditPhotoView.as_view(),
+        name='edit_photo'
+    ),
+    url(
         r'^library/$',
         AlbumView.as_view(),
         name='albums_list'
     ),
     url(
-        r'^album/add/$',
+        r'^albums/add/$',
         AddAlbumView.as_view(),
         name='add_album'
     ),
     url(
-        r'^album/(?P<pk>\d+)/$',
+        r'^albums/(?P<pk>\d+)/$',
         AlbumDetailView.as_view(),
         name='album_detail'
     ),

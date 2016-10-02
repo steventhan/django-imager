@@ -49,7 +49,6 @@ class BaseTestCase(TestCase):
         self.album.delete()
 
 
-
 class PhotoTestCase(BaseTestCase):
 
     def test_user_reference(self):
@@ -186,3 +185,35 @@ class AddAlbumView(BaseTestCase):
         album = Album.objects.last()
         self.assertEqual(album.user, self.user)
         self.assertEqual(album.title, 'hello')
+
+
+class EditPhotoTestCase(BaseTestCase):
+    """Test edit album view."""
+
+    def setUp(self):
+        super(EditPhotoTestCase, self).setUp()
+        self.response = self.client.get(reverse('edit_photo', args=(self.photo.pk, )))
+        self.logged_in_response = self.c.get(reverse('edit_photo', args=(self.photo.pk, )))
+
+    def test_redirect_when_not_logged_in(self):
+        self.assertEquals(self.response.status_code, 302)
+
+    def test_template_renders_logged_in(self):
+        self.assertTemplateUsed(
+            self.logged_in_response,
+            'imager_images/edit_photo.html'
+        )
+
+    def test_form_in_context(self):
+        self.assertTrue('form' in self.logged_in_response.context.keys())
+
+    def test_valid_post(self):
+        data = {
+            'title': 'edited',
+            'description': 'edited',
+        }
+        post = self.c.post(reverse('edit_photo', args=(self.photo.pk, )), data)
+        self.assertEqual(post.status_code, 302)
+        photo = Photo.objects.last()
+        self.assertEqual(photo.title, 'edited')
+        self.assertEqual(photo.description, 'edited')
