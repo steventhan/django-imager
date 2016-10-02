@@ -15,21 +15,16 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-LOGIN_REDIRECT_URL = '/profile/'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '911w2d2jjl-!gerla%js)9x)twafys&d^9gr3%nbbqsx6%w5#d'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_OPEN = True
@@ -127,3 +122,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/django-imager/static'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+LOGIN_REDIRECT_URL = '/profile/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if not DEBUG:
+    MEDIA_ROOT = '/var/www/django-imager/media'
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    # SESSION_COOKIE_SECURE = True
+    # CSRF_COOKIE_SECURE = True
+    # CSRF_COOKIE_HTTPONLY = True
+    X_FRAME_OPTIONS = 'DENY'
