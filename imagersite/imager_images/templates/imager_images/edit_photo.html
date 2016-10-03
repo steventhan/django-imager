@@ -3,12 +3,12 @@
 {% block body %}
 <main class="container">
   <div class="row">
-    <div class="col-sm-6">
-      <h3>Upload form</h3>
-      <form action="" method="post" enctype="multipart/form-data">
+    <div class="col-sm-12">
+      <h3>Edit Photo</h3>
+      <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Upload</button>
+        <button type="submit" class="btn btn-primary">Update photo</button>
       </form>
     </div>
   </div>
