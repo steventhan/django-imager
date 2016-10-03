@@ -217,3 +217,33 @@ class EditPhotoTestCase(BaseTestCase):
         photo = Photo.objects.last()
         self.assertEqual(photo.title, 'edited')
         self.assertEqual(photo.description, 'edited')
+
+class EditAlbumTestCase(BaseTestCase):
+    """Test the edit album view."""
+    def setUp(self):
+        super(EditAlbumTestCase, self).setUp()
+        self.response = self.client.get(reverse('edit_album', args=(self.album.pk, )))
+        self.logged_in_response = self.c.get(reverse('edit_album', args=(self.album.pk)))
+
+        def test_redirect_when_not_logged_in(self):
+        self.assertEquals(self.response.status_code, 302)
+
+    def test_template_renders_logged_in(self):
+        self.assertTemplateUsed(
+            self.logged_in_response,
+            'imager_images/edit_album.html'
+        )
+
+    def test_form_in_context(self):
+        self.assertTrue('form' in self.logged_in_response.context.keys())
+
+    def test_valid_post(self):
+        data = {
+            'title': 'edited album title',
+            'description': 'edited album description',
+        }
+        post = self.c.post(reverse('edit_album', args=(self.album.pk, )), data)
+        self.assertEqual(post.status_code, 302)
+        album = Album.objects.last()
+        self.assertEqual(album.title, 'edited album title')
+        self.assertEqual(album.description, 'edited album description')
