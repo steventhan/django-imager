@@ -6,6 +6,7 @@ from .views import (PhotoView,
                     AddAlbumView,
                     PhotoDetailView,
                     EditPhotoView,
+                    EditAlbumView,
                     )
 
 
@@ -29,6 +30,11 @@ urlpatterns = [
         r'^photos/(?P<pk>\d+)/edit/$',
         EditPhotoView.as_view(),
         name='edit_photo'
+    ),
+    url(
+        r'^albums/(?P<pk>\d+)/edit/$',
+        EditAlbumView.as_view(),
+        name='edit_album'
     ),
     url(
         r'^library/$',

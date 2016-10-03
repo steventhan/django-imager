@@ -4,7 +4,6 @@ from django.utils.decorators import method_decorator
 from django.conf import settings
 from django.urls import reverse
 from .models import Photo, Album
-import os
 
 
 @method_decorator(login_required, name='dispatch')
@@ -75,6 +74,12 @@ class AddAlbumView(CreateView):
     model = Album
     fields = ['title', 'description', 'published', 'cover', 'photos']
 
+    def get_context_data(self, **kwargs):
+        context = super(AddAlbumView, self).get_context_data(**kwargs)
+        context['form'].fields['photos'].queryset = Photo.objects.filter(user=self.request.user)
+        context['form'].fields['cover'].queryset = Photo.objects.filter(user=self.request.user)
+        return context
+
     def get_success_url(self):
         self.object.user = self.request.user
         self.object.save()
@@ -89,3 +94,13 @@ class EditPhotoView(UpdateView):
 
     def get_success_url(self):
         return reverse('photo_detail', args=(self.object.pk,))
+
+
+@method_decorator(login_required, name='dispatch')
+class EditAlbumView(UpdateView):
+    template_name = 'imager_images/edit_album.html'
+    model = Album
+    fields = ['title', 'description', 'published', 'cover', 'photos']
+
+    def get_success_url(self):
+        return reverse('album_detail', args=(self.object.pk))
