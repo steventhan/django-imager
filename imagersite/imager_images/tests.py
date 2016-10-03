@@ -225,7 +225,7 @@ class EditAlbumTestCase(BaseTestCase):
         self.response = self.client.get(reverse('edit_album', args=(self.album.pk, )))
         self.logged_in_response = self.c.get(reverse('edit_album', args=(self.album.pk)))
 
-        def test_redirect_when_not_logged_in(self):
+    def test_redirect_when_not_logged_in(self):
         self.assertEquals(self.response.status_code, 302)
 
     def test_template_renders_logged_in(self):
