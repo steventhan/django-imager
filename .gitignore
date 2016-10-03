@@ -92,3 +92,5 @@ ENV/
 # media files
 media/*
 imagersite/media/*
+
+db.sqlite3
