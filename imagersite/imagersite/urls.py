@@ -29,5 +29,5 @@ urlpatterns = [
     url(r'^accounts/register/$', CustomRegistrationView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^profile/', include('imager_profile.urls')),
-    url(r'^uploads/', include('imager_images.urls')),
+    url(r'^images/', include('imager_images.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

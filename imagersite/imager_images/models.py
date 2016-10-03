@@ -46,13 +46,10 @@ class Album(models.Model):
             null=True)
     date_modified = models.DateTimeField(
             null=True)
-    published = models.CharField(
-            max_length=7,
-            blank=True,
-            null=True)
-    cover = models.OneToOneField(Photo, related_name='cover_set')
-    photos = models.ManyToManyField(Photo, related_name='photo_set')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    published = models.BooleanField(default=False)
+    cover = models.OneToOneField(Photo, null=True, blank=True)
+    photos = models.ManyToManyField(Photo, related_name='photos')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
 
     def __str__(self):
         return "{}: {}".format(self.title, self.user.username)
