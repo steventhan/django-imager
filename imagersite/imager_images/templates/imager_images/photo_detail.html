@@ -1,0 +1,16 @@
+{% extends 'imagersite/base.html' %}
+
+{% block body %}
+<main class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Photo detail</h3>
+        <p><strong>Title: </strong>{{ photo.title }}</p>
+        <p><strong>Description: </strong>{{ photo.description}}</p>
+        <p><strong>Direct url: </strong><a href="{{ photo.image.url }}">Link</a></p>
+        <img class="img-responsive" src="{{ photo.image.url }}">
+      </ul>
+    </div>
+  </div>
+</main>
+{% endblock %}
