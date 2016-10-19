@@ -139,7 +139,6 @@ if DEBUG is False:
     EMAIL_HOST_USER = 'djiamger@gmail.com'
     EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
     SECRET_KEY = os.environ['SECRET_KEY']
-    MEDIA_ROOT = '/var/www/django-imager/media'
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     # SESSION_COOKIE_SECURE = True
