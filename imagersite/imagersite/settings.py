@@ -131,6 +131,7 @@ MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/profile/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DATABASES['default'] = dj_database_url.config()
+import pdb; pdb.set_trace()
 if DEBUG is False:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_USE_TLS = True
