@@ -25,7 +25,7 @@ class CustomRegistrationView(RegistrationView):
     def get(self, request):
         if request.user.is_authenticated():
             return HttpResponseRedirect(reverse('my_profile'))
-        return super().get(request)
+        return super(CustomRegistrationView, self).get(request)
 
 
 def home_view(request):
