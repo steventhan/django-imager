@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.conf import settings
 
-# Create your models here.
+
 @python_2_unicode_compatible
 class Photo(models.Model):
     title = models.CharField(
