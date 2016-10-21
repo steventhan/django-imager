@@ -11,6 +11,7 @@ from io import open
 
 TEST_MEDIA_SOURCE_FILE = os.path.dirname(__file__) + '/test_media/salmon-cookies.png'
 
+
 class PhotoFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Photo
@@ -218,12 +219,13 @@ class EditPhotoTestCase(BaseTestCase):
         self.assertEqual(photo.title, 'edited')
         self.assertEqual(photo.description, 'edited')
 
+
 class EditAlbumTestCase(BaseTestCase):
     """Test the edit album view."""
     def setUp(self):
         super(EditAlbumTestCase, self).setUp()
         self.response = self.client.get(reverse('edit_album', args=(self.album.pk, )))
-        self.logged_in_response = self.c.get(reverse('edit_album', args=(self.album.pk)))
+        self.logged_in_response = self.c.get(reverse('edit_album', args=(self.album.pk, )))
 
     def test_redirect_when_not_logged_in(self):
         self.assertEquals(self.response.status_code, 302)
@@ -239,11 +241,12 @@ class EditAlbumTestCase(BaseTestCase):
 
     def test_valid_post(self):
         data = {
-            'title': 'edited album title',
-            'description': 'edited album description',
+            'title': 'edited',
+            'description': 'edited',
+            'photos': self.photo.pk,
         }
         post = self.c.post(reverse('edit_album', args=(self.album.pk, )), data)
+        album = Album.objects.get(pk=self.album.pk)
         self.assertEqual(post.status_code, 302)
-        album = Album.objects.last()
-        self.assertEqual(album.title, 'edited album title')
-        self.assertEqual(album.description, 'edited album description')
+        self.assertEqual(album.title, 'edited')
+        self.assertEqual(album.description, 'edited')
