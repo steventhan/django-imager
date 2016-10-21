@@ -9,7 +9,7 @@
           <p><strong>Title: </strong>{{ album.title }}</p>
           <p><strong>Description: </strong>{{ album.description}}</p>
           <p><strong>Cover: </strong></p>
-          <a href="/images/album/{{album.id}}/edit">edit details</a>
+          <a href="{% url 'edit_album' pk=album.id %}">edit details</a>
           <a href="/images/album/{{album.id}}"><img style="width: 100px;" src="{{ album.cover.image.url }}"></a>
       </li>
     {% endfor %}

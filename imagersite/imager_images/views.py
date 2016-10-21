@@ -103,4 +103,4 @@ class EditAlbumView(UpdateView):
     fields = ['title', 'description', 'published', 'cover', 'photos']
 
     def get_success_url(self):
-        return reverse('album_detail', args=(self.object.pk))
+        return reverse('album_detail', args=(self.object.pk, ))
