@@ -18,6 +18,20 @@
         {% endfor %}
       </ul>
     </div>
+      <div class="pagination">
+    <span class="step-links">
+      {% if albums.has_previous %}
+        <a href="?page={{ photos.previous_page_number }}">previous</a>
+      {% endif %}
+      <span class="current">
+            Page {{ photos.number }} of {{ photos.paginator.num_pages }}.
+        </span>
+
+        {% if photos.has_next %}
+            <a href="?page={{ photos.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+  </div>
     <div class="col-sm-6">
       <h3>Options</h3>
       <a href="{% url 'upload_photo' %}" class="btn btn-success">Upload photo</a>

@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.urls import reverse
 from .models import Photo, Album
@@ -18,7 +19,16 @@ class PhotoView(ListView):
         return context
 
     def get_queryset(self):
-        return Photo.objects.filter(user=self.request.user)
+        photo_list = Photo.objects.filter(user=self.request.user)
+        paginator = Paginator(photo_list, 4)
+        page = self.request.GET.get('page')
+        try:
+            photos = paginator.page(page)
+        except PageNotAnInteger:
+            photos = paginator.page(1)
+        except EmptyPage:
+            photos = paginator.page(paginator.num_pages)
+        return photos
 
 
 @method_decorator(login_required, name='dispatch')
@@ -28,7 +38,16 @@ class AlbumView(ListView):
     context_object_name = 'albums'
 
     def get_queryset(self):
-        return Album.objects.filter(user=self.request.user)
+        album_list = Album.objects.filter(user=self.request.user)
+        paginator = Paginator(album_list, 4)
+        page = self.request.GET.get('page')
+        try:
+            albums = paginator.page(page)
+        except PageNotAnInteger:
+            albums = paginator.page(1)
+        except EmptyPage:
+            albums = paginator.page(paginator.num_pages)
+        return albums
 
     def get_context_data(self, **kwargs):
         context = super(AlbumView, self).get_context_data(**kwargs)
