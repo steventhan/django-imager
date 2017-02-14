@@ -87,3 +87,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+.DS_Store
+
+# media files
+media/*
+imagersite/media/*
+
+db.sqlite3

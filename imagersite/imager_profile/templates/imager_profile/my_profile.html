@@ -1,0 +1,46 @@
+{% extends 'imagersite/base.html' %}
+
+{% block body %}
+<main class="container">
+  <div class="row">
+    <div class="col-sm-5">
+      <h3>My Imager profile</h3>
+      <p>
+        <strong>Username: </strong> {{ user.username }}
+      </p>
+      <p>
+        <strong>Email: </strong> {{ user.email }}
+      </p>
+      <p>
+        <strong>First name: </strong> {{ user.first_name }}
+      </p>
+
+      <p>
+        <strong>Last name: </strong> {{ user.last_name }}
+      </p>
+
+      <p>
+        <strong>Address 1: </strong> {{ user.profile.address_1 }}
+      </p>
+
+      <p>
+        <strong>Address 2: </strong> {{ user.profile.address_2 }}
+      </p>
+      <p>
+        <strong>City: </strong> {{ user.profile.city }}
+      </p>
+      <p>
+        <strong>State: </strong> {{ user.profile.state }}
+      </p>
+      <p>
+        <strong>Zipcode: </strong> {{ user.profile.zipcode }}
+      </p>
+    </div>
+    <div class="col-sm-7">
+      <h3>Options</h3>
+      <a class="btn btn-primary" href="{% url 'albums_list' %}">My Albums</a>
+      <a class="btn btn-success" href="{% url 'photos_list' %}">My Photos</a>
+    </div>
+  </div>
+</main>
+{% endblock %}
